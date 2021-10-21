@@ -1,4 +1,4 @@
-package jwt
+package main
 
 import (
 	"gopkg.in/square/go-jose.v2"
@@ -26,4 +26,19 @@ func Generate(signingKey []byte, claims map[string]interface{}) (*string, error)
 	}
 
 	return &JWT, nil
+}
+
+func Validate(signingKey []byte, token string) (*map[string]interface{}, error) {
+	parsedJWT, err := jwt.ParseSigned(token)
+	if err != nil {
+		return nil, err
+	}
+
+	var resultClaims map[string]interface{}
+	err = parsedJWT.Claims(signingKey, &resultClaims)
+	if err != nil {
+		return nil, err
+	}
+
+	return &resultClaims, nil
 }

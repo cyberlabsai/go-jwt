@@ -1,26 +1,34 @@
 # go-jwt
 GoJwt is a Cyberlabs's simple implementation of JWT.
-![](https://www.collinsdictionary.com/images/full/gopher_438742864.jpg)
-## Generate
+![](https://emojis.slackmojis.com/emojis/images/1507931630/3036/gopher_dance.gif?1507931630)
+## Example
 ```go
 package main
+
 import (
 	"fmt"
+	"log"
+
 	jwt "github.com/cyberlabsai/jwt-go"
-	)
+)
 
 func main() {
 	signingKey := []byte("very-very-very-secret")
-	payload := map[string]interface{
-	}{
+	claims := map[string]interface{}{
 		"name": "atila",
 	}
+	// Generate token
+	token, err := jwt.Generate(signingKey, claims)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println("Tk: ", *token)
 
-	token, _ := jwt.Generate(signingKey, payload)
-
-	fmt.Println(*token)
+	// Validate token
+	payload, err := jwt.Validate(signingKey, *token)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println("Payload: ", *payload)
 }
-```
-## Validate
-```go
 ```
