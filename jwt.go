@@ -9,7 +9,7 @@ type Payload struct {
 	Data map[string]interface{}
 }
 
-func Generate(signingKey []byte, alg jose.SignatureAlgorithm, claims Payload) (*string, error) {
+func Generate(signingKey interface{}, alg jose.SignatureAlgorithm, claims Payload) (*string, error) {
 	sig, err := jose.NewSigner(
 		jose.SigningKey{Algorithm: alg, Key: signingKey},
 		(&jose.SignerOptions{}).WithType("JWT").WithBase64(true),
@@ -29,7 +29,7 @@ func Generate(signingKey []byte, alg jose.SignatureAlgorithm, claims Payload) (*
 	return &JWT, nil
 }
 
-func Validate(signingKey []byte, token string) (*Payload, error) {
+func Validate(signingKey interface{}, token string) (*Payload, error) {
 	parsedJWT, err := jwt.ParseSigned(token)
 	if err != nil {
 		return nil, err
