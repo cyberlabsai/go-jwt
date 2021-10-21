@@ -1,4 +1,4 @@
-module go-jwt
+module github.com/cyberlabsai/go-jwt
 
 go 1.16
 
