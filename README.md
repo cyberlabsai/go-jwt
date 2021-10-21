@@ -18,7 +18,7 @@ func main() {
 		"name": "atila",
 	}
 	// Generate token
-	token, err := jwt.Generate(signingKey, claims)
+	token, err := jwt.Generate(signingKey, "HS256", claims)
 	if err != nil {
 		log.Fatalln(err)
 	}

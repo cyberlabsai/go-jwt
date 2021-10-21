@@ -1,14 +1,17 @@
-package main
+package jwt
 
 import (
 	"gopkg.in/square/go-jose.v2"
 	"gopkg.in/square/go-jose.v2/jwt"
-	"time"
 )
+type Payload struct {
+	jwt.Claims
+	Data map[string]interface{}
+}
 
-func Generate(signingKey []byte, claims map[string]interface{}) (*string, error) {
+func Generate(signingKey []byte, alg jose.SignatureAlgorithm, claims Payload) (*string, error) {
 	sig, err := jose.NewSigner(
-		jose.SigningKey{Algorithm: jose.HS256, Key: signingKey},
+		jose.SigningKey{Algorithm: alg, Key: signingKey},
 		(&jose.SignerOptions{}).WithType("JWT").WithBase64(true),
 	)
 	if err != nil {
@@ -16,8 +19,6 @@ func Generate(signingKey []byte, claims map[string]interface{}) (*string, error)
 	}
 
 	builder := jwt.Signed(sig)
-
-	claims["issued_at"] = jwt.NewNumericDate(time.Now())
 
 	builder = builder.Claims(claims)
 	JWT, err := builder.CompactSerialize()
@@ -28,13 +29,13 @@ func Generate(signingKey []byte, claims map[string]interface{}) (*string, error)
 	return &JWT, nil
 }
 
-func Validate(signingKey []byte, token string) (*map[string]interface{}, error) {
+func Validate(signingKey []byte, token string) (*Payload, error) {
 	parsedJWT, err := jwt.ParseSigned(token)
 	if err != nil {
 		return nil, err
 	}
 
-	var resultClaims map[string]interface{}
+	var resultClaims Payload
 	err = parsedJWT.Claims(signingKey, &resultClaims)
 	if err != nil {
 		return nil, err
