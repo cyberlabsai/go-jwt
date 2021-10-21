@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"log"
 
-	jwt "github.com/cyberlabsai/jwt-go"
+	"github.com/cyberlabsai/go-jwt"
 )
 
 func main() {
