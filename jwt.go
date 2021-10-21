@@ -4,9 +4,11 @@ import (
 	"gopkg.in/square/go-jose.v2"
 	"gopkg.in/square/go-jose.v2/jwt"
 )
+
+type Claims jwt.Claims
 type Payload struct {
-	jwt.Claims
-	Data map[string]interface{}
+	Claims `json:"claims"`
+	Data   map[string]interface{} `json:"data"`
 }
 
 func Generate(signingKey interface{}, alg jose.SignatureAlgorithm, claims Payload) (*string, error) {

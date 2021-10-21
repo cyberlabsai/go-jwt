@@ -9,13 +9,16 @@ import (
 	"fmt"
 	"log"
 
-	jwt "github.com/cyberlabsai/jwt-go"
+	"github.com/cyberlabsai/jwt-go"
 )
 
 func main() {
 	signingKey := []byte("very-very-very-secret")
-	claims := map[string]interface{}{
-		"name": "atila",
+	claims := jwt.Payload{
+		Claims: jwt.Claims{},
+		Data: map[string]interface{}{
+			"name": "atila",
+		},
 	}
 	// Generate token
 	token, err := jwt.Generate(signingKey, "HS256", claims)
