@@ -8,8 +8,8 @@ package main
 import (
 	"fmt"
 	"log"
-
-	"github.com/cyberlabsai/jwt-go"
+	
+	"github.com/cyberlabsai/go-jwt"
 )
 
 func main() {
